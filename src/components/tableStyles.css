@@ -1,0 +1,38 @@
+/* baseTableCssNoHover */
+table {
+  border-collapse: collapse;
+}
+
+table tbody tr:nth-of-type(even) {
+  background-color: white;
+}
+
+table tbody tr:nth-of-type(odd) {
+  background-color: lightgray;
+}
+
+table tr td {
+  border-top: 1px dashed;
+  font-size: 1rem;
+  padding: 0.125rem;
+  text-align: center;
+  vertical-align: middle;
+}
+
+table tr:last-of-type td {
+  border-bottom: 1px dashed;
+}
+
+table tr th {
+  font-size: 1.25rem;
+  font-weight: 500;
+  line-height: 1.5rem;
+  padding: 0.5rem;
+  text-align: center;
+  vertical-align: middle;
+}
+
+/* baseTableCss */
+table tbody tr:hover {
+  background-color: gray20;
+}
