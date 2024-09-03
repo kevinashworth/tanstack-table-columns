@@ -1,0 +1,11 @@
+.sidebar a.active,
+.sidebar a:hover,
+.sidebar button:hover {
+  background-color: #2a7de1; /* sky */
+}
+
+.sidebar-impersonation a.active,
+.sidebar-impersonation a:hover,
+.sidebar-impersonation button:hover {
+  background-color: #ff6a00; /* burnt #cc5500, 10% lightened */
+}

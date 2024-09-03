@@ -2,8 +2,8 @@ import PersonTable from './PersonTable'
 
 function App() {
   return (
-    <div className="flex h-screen items-center justify-center bg-blue-900">
-      <div className="max-w-3xl bg-white p-4">
+    <div className="bg-vibrant flex items-center justify-center">
+      <div className="m-4 max-w-3xl bg-white p-4">
         <PersonTable />
       </div>
     </div>

@@ -5,7 +5,7 @@ export type Person = {
   firstName: string
   lastName: string
   token_amount: number
-  createdDateTime: string
+  created_datetime: string
 }
 
 const range = (len: number) => {
@@ -21,7 +21,7 @@ const newPerson = (): Person => {
     firstName: faker.person.firstName(),
     lastName: faker.person.lastName(),
     token_amount: parseInt(faker.finance.amount()),
-    createdDateTime: dayjs(faker.date.recent().getTime()).toISOString()
+    created_datetime: dayjs(faker.date.past().getTime()).toISOString()
   }
 }
 

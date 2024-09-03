@@ -12,18 +12,36 @@ import clsx from 'clsx'
 import BTC from '../icons/btc'
 
 import DateCell from './DateCell'
+// import TokensCell from './TokensCell'
 
 import { makeData } from '../makeData'
 import type { Person } from '../makeData'
 
-import './tableStyles.css'
+// import './tableStyles.css'
+import { baseTableCss, tableCssHighlightAlternateColumns } from './tableStyles'
 
 const columnHelper = createColumnHelper<Person>()
 
 const columns = [
-  columnHelper.accessor('createdDateTime', {
+  // columnHelper.accessor('created_datetime', {
+  //   header: () => 'Date',
+  //   cell: (info) => <DateCell date={info.getValue()} format="M/D/YY h:MMa" />
+  // }),
+  columnHelper.accessor('created_datetime', {
     header: () => 'Date',
-    cell: (info) => <DateCell date={info.getValue()} format="M/D/YY h:MMa" />
+    cell: (info) => (
+      <div className="text-right">
+        <DateCell date={info.getValue()} format="M/D/YY" />
+      </div>
+    )
+  }),
+  columnHelper.accessor('created_datetime', {
+    id: 'time',
+    cell: (info) => (
+      <div className="text-left">
+        <DateCell date={info.getValue()} format="h:MMa" />
+      </div>
+    )
   }),
   columnHelper.accessor('firstName', {
     header: () => 'First',
@@ -62,7 +80,7 @@ export default function PersonTable() {
   // const refreshData = () => setData(makeData(1000))
 
   const [sorting, setSorting] = useState<SortingState>([
-    { desc: true, id: 'createdDateTime' }
+    { desc: true, id: 'created_datetime' }
   ])
 
   const table = useReactTable({
@@ -77,49 +95,71 @@ export default function PersonTable() {
   })
 
   return (
-    <table className="w-full table-fixed border-collapse">
-      <thead>
-        {table.getHeaderGroups().map((headerGroup) => (
-          <tr key={headerGroup.id}>
-            {headerGroup.headers.map((header) => {
-              if (header.id === 'token') return null
-              return (
-                <th
-                  className={
-                    header.column.getCanSort()
-                      ? 'cursor-pointer select-none'
-                      : ''
-                  }
-                  colSpan={header.id === 'token_amount' ? 2 : undefined}
-                  key={header.id}
-                  onClick={header.column.getToggleSortingHandler()}
-                  style={{ width: `${header.getSize()}px` }}
-                >
-                  {flexRender(
-                    header.column.columnDef.header,
-                    header.getContext()
-                  )}
-                  {{
-                    asc: '\u00A0↑',
-                    desc: '\u00A0↓'
-                  }[header.column.getIsSorted() as string] ?? null}
-                </th>
-              )
-            })}
-          </tr>
-        ))}
-      </thead>
-      <tbody>
-        {table.getRowModel().rows.map((row, i) => (
-          <tr key={`person-row-${i}`}>
-            {row.getVisibleCells().map((cell) => (
-              <td key={cell.id}>
-                {flexRender(cell.column.columnDef.cell, cell.getContext())}
-              </td>
+    <div className="flex flex-row">
+      <div>
+        <label className="flex w-full flex-row items-center gap-2 text-xs text-gray-600">
+          <input
+            checked={areEnabled}
+            className="accent-sky size-4 cursor-pointer"
+            name="enable-3-and-4"
+            onChange={handleChangeEnabled}
+            type="checkbox"
+          />
+          Enable answers 3 and 4
+        </label>
+      </div>
+      <div>
+        <table className="w-full table-fixed" css={baseTableCss}>
+          <thead>
+            {table.getHeaderGroups().map((headerGroup) => (
+              <tr key={headerGroup.id}>
+                {headerGroup.headers.map((header) => {
+                  const colSpan2Headers = ['token_amount', 'created_datetime']
+                  const unRenderedHeaders = ['time', 'token']
+                  const isColSpan2Header = colSpan2Headers.includes(header.id)
+                  const isUnRenderedHeader = unRenderedHeaders.includes(
+                    header.id
+                  )
+                  if (isUnRenderedHeader) return null
+                  return (
+                    <th
+                      className={
+                        header.column.getCanSort()
+                          ? 'cursor-pointer select-none'
+                          : ''
+                      }
+                      colSpan={isColSpan2Header ? 2 : undefined}
+                      key={header.id}
+                      onClick={header.column.getToggleSortingHandler()}
+                      style={{ width: `${header.getSize()}px` }}
+                    >
+                      {flexRender(
+                        header.column.columnDef.header,
+                        header.getContext()
+                      )}
+                      {{
+                        asc: '\u00A0↑',
+                        desc: '\u00A0↓'
+                      }[header.column.getIsSorted() as string] ?? null}
+                    </th>
+                  )
+                })}
+              </tr>
             ))}
-          </tr>
-        ))}
-      </tbody>
-    </table>
+          </thead>
+          <tbody>
+            {table.getRowModel().rows.map((row, i) => (
+              <tr key={`person-row-${i}`}>
+                {row.getVisibleCells().map((cell) => (
+                  <td key={cell.id}>
+                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                  </td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
   )
 }
